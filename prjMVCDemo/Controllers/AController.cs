@@ -1,4 +1,5 @@
 ﻿using prjLottoApp.Models;
+using prjMVCDemo.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -43,7 +44,7 @@ namespace prjMVCDemo.Controllers
         // 若參數名稱為"id"，則網址上問號與Key都不用輸入
         // ex:https://local/A/demoParameter/2
         public string demoParameter(int? productId)
-        {            
+        {
             if (productId == 1)
                 return "XBox 加入購物車成功";
             else if (productId == 2)
@@ -55,7 +56,7 @@ namespace prjMVCDemo.Controllers
 
         public string queryById(int? id)
         {
-            if(id==null)
+            if (id == null)
                 return "找不到該客戶資料";
 
             SqlConnection con = new SqlConnection();
@@ -68,7 +69,7 @@ namespace prjMVCDemo.Controllers
             string result = "找不到該客戶資料";
             if (reader.Read())
                 result = reader["fName"].ToString() + " / " + reader["fPhone"].ToString();
-            
+
             con.Close();
             return result;
         }
@@ -89,9 +90,94 @@ namespace prjMVCDemo.Controllers
         }
 
         // GET: A
-        public ActionResult showById()
+        public ActionResult showById(int? id)
         {
+            // ViewBag 弱型別
+            if (id != null)
+            {
+                SqlConnection con = new SqlConnection();
+                con.ConnectionString = @"Data Source=.;Initial Catalog=dbDemo;Integrated Security=True";
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand("Select * from tCustomer where fId = " + id.ToString(), con);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    CCustomer c = new CCustomer();                    
+                    c.fId = (int)reader["fId"];
+                    c.fName = reader["fName"].ToString();
+                    c.fPhone = reader["fPhone"].ToString();
+                    c.fEmail = reader["fEmail"].ToString();
+                    ViewBag.KK = c;
+                }
+
+                con.Close();
+            }
+
             return View();
+        }
+
+        public ActionResult bindingById(int? id)
+        {            
+            CCustomer c = null;
+
+            if (id != null)
+            {
+                SqlConnection con = new SqlConnection();
+                con.ConnectionString = @"Data Source=.;Initial Catalog=dbDemo;Integrated Security=True";
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand("Select * from tCustomer where fId = " + id.ToString(), con);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    c = new CCustomer();
+                    c.fId = (int)reader["fId"];
+                    c.fName = reader["fName"].ToString();
+                    c.fPhone = reader["fPhone"].ToString();
+                    c.fEmail = reader["fEmail"].ToString();
+                }
+                con.Close();
+            }
+            return View(c);
+        }
+
+        public string testingInsert()
+        {
+            CCustomer p = new CCustomer()
+            {
+                fName = "Clock Chen",
+                fPhone = "0912345678",
+                fEmail = "clock@cdc.gov.tw",
+                fAddress = "Taipei",
+                fPassword = "1922"
+            };
+            (new CCustomerFactory()).insert(p);
+            return "新增資料成功";
+        }
+
+        public string testingDelete(int? id)
+        {
+            if (id == null)
+            {
+                return "沒有指定PK";
+            }
+            (new CCustomerFactory()).Delete((int)id);
+            return "刪除資料成功";
+        }
+
+        public string testingUpdate()
+        {
+            CCustomer p = new CCustomer()
+            {   
+                fId = 1007,
+                fPhone = "0900000000",
+                fAddress = "Kaohsiung"
+            };
+            (new CCustomerFactory()).update(p);
+            return "修改資料成功";
         }
     }
 }

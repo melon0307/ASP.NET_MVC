@@ -1,11 +1,27 @@
 ﻿
 @{
     ViewBag.Title = "showById";
+
+    string photo = "anonymous.jpg";
+    if(ViewBag.KK != null)
+    {
+        photo = ViewBag.KK.fId + ".jpg";
+    }
 }
 
 <h2>View 範例</h2>
 <p>
-    <h1>Marco</h1>
-    <br />
-    0912345678 / marco@gmail.com
+    <img src="~/Images/@photo" width="200" height="160" />
+    @{
+        if (ViewBag.KK == null)
+        {
+            <h1>沒有任何資料</h1>
+        }
+        else
+        {
+            <h1>@ViewBag.KK.fName</h1>
+            <br />
+            @ViewBag.KK.fPhone @:/ @ViewBag.KK.fEmail
+        }
+    }    
 </p>
