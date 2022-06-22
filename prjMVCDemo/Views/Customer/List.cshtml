@@ -1,0 +1,45 @@
+﻿@using prjMVCDemo.Models;
+@model List<CCustomer>
+@{
+    ViewBag.Title = "List";
+}
+<p>
+    <a href="~/Customer/New">新增客戶</a>
+</p>
+<h2>客戶資料</h2>
+@using (Html.BeginForm())
+{
+    @:關鍵字 @Html.TextBox("txtKeyword")
+    <input type="submit" value="搜尋" />
+}
+<br />
+<table border="1">
+    <tr>
+        <th>序</th>
+        <th>姓名</th>
+        <th>電話</th>
+        <th>電子郵件</th>
+        <th>地址</th>
+        <th>密碼</th>
+        <th>修改</th>
+        <th>刪除</th>
+    </tr>
+    @{
+        int count = 0;
+        foreach (CCustomer c in Model)
+        {
+            count++;
+            <tr>
+                <td>@count</td>
+                <td>@c.fName</td>
+                <td>@c.fPhone</td>
+                <td>@c.fEmail</td>
+                <td>@c.fAddress</td>
+                <td>@c.fPassword</td>
+                <td>@Html.ActionLink("修改", "Edit", "Customer", new { id = c.fId }, null)</td>
+                @*<td><a href="~/Customer/Delete/@c.fId" onclick="return confirm('確定要刪除資料嗎?')" >刪除</a></td>*@
+                <td>@Html.ActionLink("刪除", "Delete", "Customer", new { id = c.fId }, new { onclick = "return confirm('確定要刪除資料嗎?')" })</td>
+            </tr>
+        }
+    }
+</table>

@@ -11,11 +11,71 @@ namespace prjMVCDemo.Models
         public void Delete(int fId)
         {
             List<SqlParameter> paras = new List<SqlParameter>();
-            string sql = "DELETE FROM tCustomer WHERE fId = @K_FId";
-            paras.Add(new SqlParameter("K_FId", (object)fId));
+            string sql = "DELETE FROM tCustomer WHERE fId = @K_FID";
+            paras.Add(new SqlParameter("K_FID", (object)fId));
             executeCmd(sql, paras);
         }
 
+        public CCustomer queryById(int fId)
+        {
+            string sql = "SELECT * FROM tCustomer WHERE fId = @K_FID";
+            List<SqlParameter> paras = new List<SqlParameter>();
+            paras.Add(new SqlParameter("K_FID", (object)fId));
+            var list = queryBySql(sql, paras);
+            if (list.Count == 0)
+                return null;
+            return list[0];
+        }
+
+        internal List<CCustomer> queryByKeyword(string keyword)
+        {
+            string sql = "SELECT * FROM tCustomer WHERE fName LIKE @K_KEYWORD";
+            sql += " OR fPhone LIKE @K_KEYWORD";
+            sql += " OR fEmail LIKE @K_KEYWORD";
+            sql += " OR fAddress LIKE @K_KEYWORD";
+
+            List<SqlParameter> paras = new List<SqlParameter>();
+            paras.Add(new SqlParameter("K_KEYWORD", "%" + (object)keyword + "%"));
+            return queryBySql(sql, paras); ;
+        }
+
+        public List<CCustomer> queryAll()
+        {
+            return queryBySql("SELECT * FROM tCustomer", null);
+        }
+
+        private List<CCustomer> queryBySql(string sql, List<SqlParameter> paras)
+        {
+            List<CCustomer> list = new List<CCustomer>();
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = @"Data Source=.;Initial Catalog=dbDemo;Integrated Security=True";
+            con.Open();
+
+            SqlCommand cmd = new SqlCommand(sql, con);
+            if (paras != null)
+            {
+                foreach (SqlParameter p in paras)
+                {
+                    cmd.Parameters.Add(p);
+                }
+            }
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                list.Add(new CCustomer()
+                {
+                    fId = (int)reader["fId"],
+                    fName = reader["fName"].ToString(),
+                    fPhone = reader["fPhone"].ToString(),
+                    fEmail = reader["fEmail"].ToString(),
+                    fAddress = reader["fAddress"].ToString(),
+                    fPassword = reader["fPassword"].ToString(),
+                });
+            }
+
+            con.Close();
+            return list;            
+        }
         public void update(CCustomer p)
         {
             List<SqlParameter> paras = new List<SqlParameter>();
@@ -33,7 +93,7 @@ namespace prjMVCDemo.Models
             if (!string.IsNullOrEmpty(p.fEmail))
             {
                 sql += " fEmail=@K_FEMAIL, ";
-                paras.Add(new SqlParameter("K_EMAIL", (object)p.fEmail));
+                paras.Add(new SqlParameter("K_FEMAIL", (object)p.fEmail));
             }
             if (!string.IsNullOrEmpty(p.fAddress))
             {
@@ -43,7 +103,7 @@ namespace prjMVCDemo.Models
             if (!string.IsNullOrEmpty(p.fPassword))
             {
                 sql += " fPassword=@K_FPASSWORD, ";
-                paras.Add(new SqlParameter("K_PASSWORD", (object)p.fPassword));
+                paras.Add(new SqlParameter("K_FPASSWORD", (object)p.fPassword));
             }
             sql = sql.Trim();
             if (sql.Substring(sql.Length - 1, 1) == ",")

@@ -179,5 +179,37 @@ namespace prjMVCDemo.Controllers
             (new CCustomerFactory()).update(p);
             return "修改資料成功";
         }
+
+        public string testingQuery()
+        {
+            return "目前客戶數目: " + (new CCustomerFactory().queryAll().Count.ToString());
+        }
+
+        public ActionResult demoFrom()
+        {
+            ViewBag.Ans = "?";
+            ViewBag.a = "0";
+            ViewBag.b = "0";
+            ViewBag.c = "0";
+
+            if (!string.IsNullOrEmpty(Request.Form["txtA"]))
+            {
+                int a = Convert.ToInt32(Request.Form["txtA"]);
+                int b = Convert.ToInt32(Request.Form["txtB"]);
+                int c = Convert.ToInt32(Request.Form["txtC"]);
+                ViewBag.a = a.ToString();
+                ViewBag.b = b.ToString();
+                ViewBag.c = c.ToString();
+
+                double x = Math.Sqrt((b * b) - (4 * a * c)),
+                       x1 = (-b + x) / (2 * a),
+                       x2 = (-b - x) / (2 * a),
+                       ans1 = Math.Round(x1, 2),
+                       ans2 = Math.Round(x2, 2);
+
+                ViewBag.Ans = $"{ans1} or {ans2}";
+            }
+            return View();
+        }
     }
 }
