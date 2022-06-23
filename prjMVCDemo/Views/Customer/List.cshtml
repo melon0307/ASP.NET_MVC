@@ -3,17 +3,18 @@
 @{
     ViewBag.Title = "List";
 }
-<p>
-    <a href="~/Customer/New">新增客戶</a>
-</p>
+
 <h2>客戶資料</h2>
+<p>
+    <a href="~/Customer/New" class="btn btn-primary">新增客戶</a>
+</p>
 @using (Html.BeginForm())
 {
     @:關鍵字 @Html.TextBox("txtKeyword")
     <input type="submit" value="搜尋" />
 }
 <br />
-<table border="1">
+<table class="table table-striped table-hover">
     <tr>
         <th>序</th>
         <th>姓名</th>
@@ -36,9 +37,9 @@
                 <td>@c.fEmail</td>
                 <td>@c.fAddress</td>
                 <td>@c.fPassword</td>
-                <td>@Html.ActionLink("修改", "Edit", "Customer", new { id = c.fId }, null)</td>
+                <td>@Html.ActionLink("修改", "Edit", "Customer", new { id = c.fId }, new { @class= "btn btn-info" })</td>
                 @*<td><a href="~/Customer/Delete/@c.fId" onclick="return confirm('確定要刪除資料嗎?')" >刪除</a></td>*@
-                <td>@Html.ActionLink("刪除", "Delete", "Customer", new { id = c.fId }, new { onclick = "return confirm('確定要刪除資料嗎?')" })</td>
+                <td>@Html.ActionLink("刪除", "Delete", "Customer", new { id = c.fId }, new { onclick = "return confirm('確定要刪除資料嗎?')" ,Class="btn btn-danger"})</td>
             </tr>
         }
     }
