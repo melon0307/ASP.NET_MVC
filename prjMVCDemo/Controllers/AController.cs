@@ -211,5 +211,18 @@ namespace prjMVCDemo.Controllers
             }
             return View();
         }
+
+        [HttpGet]
+        public ActionResult demoFileUpload()
+        {            
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult demoFileUpload(HttpPostedFileBase photo)
+        {
+            photo.SaveAs(@"C:\Users\Student\source\repos\slnMVCDemo\prjMVCDemo\Images\text.jpg");
+            return View();
+        }
     }
 }

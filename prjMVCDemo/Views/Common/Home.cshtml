@@ -1,0 +1,16 @@
+﻿@model prjMVCDemo.Models.CCustomer
+@{
+    ViewBag.Title = "Home";
+    string userName = "";
+    if(Model != null)
+    {
+        userName = Model.fName;
+    }
+}
+
+@{
+    <h2>歡迎 @userName 登入系統</h2>
+}
+
+
+

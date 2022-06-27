@@ -26,5 +26,6 @@ namespace prjMVCDemo
         public string fQty { get; set; }
         [DisplayName("產品單價")]
         public Nullable<decimal> fPrice { get; set; }
+        public string fImagePath { get; set; }
     }
 }

@@ -7,7 +7,7 @@
 <h2>線上購物</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("檢視購物車", "CartView", "Shopping",null, new { @class = "btn btn-success" })
 </p>
 <table class="table">
     <tr>
@@ -45,7 +45,8 @@
             @Html.DisplayFor(modelItem => item.fPrice)
         </td>
         <td>
-            @Html.ActionLink("加入", "AddToCart", "Shopping", new { id = item.fId }, new { @class = "btn btn-warning" })
+            @Html.ActionLink("加入購物車", "AddToCart", "Shopping", new { id = item.fId }, new { @class = "btn btn-warning" })|
+            @Html.ActionLink("加入 Session", "AddToSession", "Shopping", new { id = item.fId }, new { @class = "btn btn-warning" })
         </td>
     </tr>
         }
