@@ -62,8 +62,15 @@ namespace prjMVCDemo.Controllers
         {
             dbDemoEntities db = new dbDemoEntities();
             tProducts prod = db.tProducts.FirstOrDefault(x => x.fId == p.fId);
+
             if (prod != null)
             {
+                if (p.photo != null)
+                {
+                    string pName = Guid.NewGuid().ToString() + ".png";
+                    p.photo.SaveAs(Server.MapPath("~/Images/" + pName));
+                    prod.fImagePath = pName;
+                }
                 prod.fName = p.fName;
                 prod.fPrice = p.fPrice;
                 prod.fQty = p.fQty;

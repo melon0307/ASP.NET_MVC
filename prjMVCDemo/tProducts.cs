@@ -13,6 +13,7 @@ namespace prjMVCDemo
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Web;
 
     public partial class tProducts
     {
@@ -27,5 +28,6 @@ namespace prjMVCDemo
         [DisplayName("產品單價")]
         public Nullable<decimal> fPrice { get; set; }
         public string fImagePath { get; set; }
+        public HttpPostedFileBase photo { get; set; }
     }
 }
