@@ -53,7 +53,7 @@
             @Html.DisplayFor(modelItem => item.小計)
         </td>
         <td>
-            @Html.ActionLink("取消", "Delete", "Shopping", new { id = (count - 1) },new { @class = "btn btn-danger" } )
+            @Html.ActionLink("取消", "Delete", "Shopping", new { id = (count - 1) },new { @class = "btn btn-danger", onclick = "return confirm('確定要刪除嗎?')" } )
         </td>
     </tr>
     }
